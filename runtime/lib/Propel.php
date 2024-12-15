@@ -731,15 +731,17 @@ class Propel
             }
             $key = constant($key);
 
-            $value = $optiondata['value'];
-            if (is_string($value) && strpos($value, '::') !== false) {
-                if (!defined($value)) {
-                    throw new PropelException("Invalid PDO option/attribute value specified: " . $value);
+            if (isset($optiondata['value'])) {
+                $value = $optiondata['value'];
+                if (is_string($value) && strpos($value, '::') !== false) {
+                    if (!defined($value)) {
+                        throw new PropelException("Invalid PDO option/attribute value specified: " . $value);
+                    }
+                    $value = constant($value);
                 }
-                $value = constant($value);
-            }
 
-            $write_to[$key] = $value;
+                $write_to[$key] = $value;
+            }
         }
     }
 
