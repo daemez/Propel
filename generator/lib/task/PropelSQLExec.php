@@ -328,6 +328,8 @@ class PropelSQLExec extends AbstractPropelTask
                     $this->log("  Rollback failed");
                 }
             }
+            $this->log("PDOException in insertDatabaseSqlFiles: " . $e->getMessage(), Project::MSG_ERR);
+            $this->log("DSN: " . $dsn, Project::MSG_ERR);
             throw new BuildException($e);
         }
 
@@ -369,6 +371,8 @@ class PropelSQLExec extends AbstractPropelTask
             $this->goodSql++;
         } catch (PDOException $e) {
             $this->log("Failed to execute: " . $sql, Project::MSG_ERR);
+            $this->log("PDOException: " . $e->getMessage(), Project::MSG_ERR);
+            $this->log("Error code: " . $e->getCode(), Project::MSG_ERR);
             if ($this->onError != "continue") {
                 throw $e;
             }
