@@ -57,7 +57,9 @@ class PgsqlPlatform extends DefaultPlatform
 
     public function getMaxColumnNameLength()
     {
-        return 32;
+        // PostgreSQL's real identifier limit is NAMEDATALEN-1 = 63. The old value (32) truncated
+        // long index names into colliding prefixes -> 42P07 on insert-sql (indexes silently skipped).
+        return 63;
     }
 
     /**
