@@ -590,6 +590,10 @@ abstract class DBAdapter
             // we always need to make sure that the stream is rewound, otherwise nothing will
             // get written to database.
             rewind($value);
+        } elseif ($value === '' && $cMap->isNumeric()) {
+            // MySQL coerced '' -> 0 for numeric columns; PostgreSQL rejects '' (SQLSTATE 22P02).
+            // Bind NULL so an empty PK/filter yields "no match" instead of a fatal.
+            return $stmt->bindValue($parameter, null, PDO::PARAM_NULL);
         }
 
         return $stmt->bindValue($parameter, $value, $cMap->getPdoType());
