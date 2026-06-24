@@ -82,7 +82,7 @@ class MysqlSchemaParser extends BaseSchemaParser
     /**
      *
      */
-    public function parse(Database $database, Task $task = null)
+    public function parse(Database $database, ?Task $task = null)
     {
         $this->addVendorInfo = $this->getGeneratorConfig()->getBuildProperty('addVendorInfo');
 
